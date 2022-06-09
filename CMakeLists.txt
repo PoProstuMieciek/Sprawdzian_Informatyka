@@ -1,0 +1,8 @@
+project(Sprawdzian_Zelazny)
+
+add_executable(amicable_numbers amicable_numbers/main.cpp)
+add_executable(euclidean_algorithm euclidean_algorithm/main.cpp)
+add_executable(pascal_triangle pascal_triangle/main.cpp)
+add_executable(power power/main.cpp)
+add_executable(triangle triangle/main.cpp)
+add_executable(twin_primes twin_primes/main.cpp)
