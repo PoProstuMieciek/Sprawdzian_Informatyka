@@ -1,4 +1,4 @@
-project(Sprawdzian_Zelazny)
+project(Sprawdzian_Informatyka)
 
 add_executable(amicable_numbers amicable_numbers/main.cpp)
 add_executable(euclidean_algorithm euclidean_algorithm/main.cpp)
