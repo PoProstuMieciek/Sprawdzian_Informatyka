@@ -45,16 +45,16 @@ int binary_string_to_int(string binary_string)
 // get unique characters in alphabetical order
 string generate_dictionary(string text)
 {
-    bool tab[128] = {};
+    bool tab[256] = {};
     for (int i = 0; i < text.size(); i++)
     {
-        tab[text[i]] = true;
+        tab[(unsigned char) text[i]] = true;
     }
 
     string unique = "";
-    for (int i = 0; i < 128; i++)
+    for (int i = 0; i < 256; i++)
     {
-        if (tab[i]) unique += i;
+        if (tab[i]) unique += (char) i;
     }
     return unique;
 }
@@ -198,7 +198,8 @@ void decompress_file(string input_filename, string output_filename, bool benchma
     input_file.close();
 
     // recreate dictionary from file
-    int dict_size = file_content[0];
+    int dict_size = (unsigned char) file_content[0];
+    if (dict_size == 0) dict_size = 256;
     string dict = "";
     for (int i = 0; i < dict_size; i++)
     {
