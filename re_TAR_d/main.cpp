@@ -43,7 +43,7 @@ int binary_string_to_int(string binary_string)
 }
 
 // get unique characters in alphabetical order
-string generate_dictionary(string text)
+string generate_dictionary(const string &text)
 {
     bool tab[256] = {};
     for (int i = 0; i < text.size(); i++)
@@ -59,7 +59,7 @@ string generate_dictionary(string text)
     return unique;
 }
 
-string compress_text(string text)
+string compress_text(const string &text)
 {
     string dict = generate_dictionary(text);
 
@@ -101,20 +101,21 @@ string compress_text(string text)
     compressed += (char) dict.size();
     compressed += dict;
 
+    string byte = "";
     for (int i = 0; i < final_binary_text.size() / 8; i++)
     {
-        string byte = "";
         for (int j = 0; j < 8; j++)
         {
             byte += final_binary_text[i * 8 + j];
         }
         compressed += (char) binary_string_to_int(byte);
+        byte = "";
     }
 
     return compressed;
 }
 
-string decompress_text(string dict, string text_padded)
+string decompress_text(const string &dict, const string &text_padded)
 {
     unsigned char first_byte = text_padded[0];
     unsigned int padding = first_byte >> 5;
@@ -135,9 +136,9 @@ string decompress_text(string dict, string text_padded)
     int key_bit_size = max(1, (int) ceil(log2(dict.size())));
 
     string decompressed_data = "";
+    string binary_cpr = "";
     for (int i = 0; i < binary_string.size() / key_bit_size; i++)
     {
-        string binary_cpr;
         for (int j = 0; j < key_bit_size; j++)
         {
             binary_cpr += binary_string[i * key_bit_size + j];
@@ -146,12 +147,13 @@ string decompress_text(string dict, string text_padded)
         int index_in_dict = binary_string_to_int(binary_cpr);
 
         decompressed_data += dict[index_in_dict];
+        binary_cpr = "";
     }
 
     return decompressed_data;
 }
 
-void compress_file(string input_filename, string output_filename, bool benchmark)
+void compress_file(const string &input_filename, const string &output_filename, bool benchmark)
 {
     // https://stackoverflow.com/a/22387757
     auto start = high_resolution_clock::now();
@@ -184,7 +186,7 @@ void compress_file(string input_filename, string output_filename, bool benchmark
     }
 }
 
-void decompress_file(string input_filename, string output_filename, bool benchmark)
+void decompress_file(const string &input_filename, const string &output_filename, bool benchmark)
 {
     // https://stackoverflow.com/a/22387757
     auto start = high_resolution_clock::now();
@@ -274,6 +276,3 @@ int main()
 
     return 0;
 }
-
-
-
