@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 // int_to_binary_string(5, 8) = "00000101"
 string int_to_binary_string(int number, int total_length)
@@ -151,6 +153,9 @@ string decompress_text(string dict, string text_padded)
 
 void compress_file(string input_filename, string output_filename, bool benchmark)
 {
+    // https://stackoverflow.com/a/22387757
+    auto start = high_resolution_clock::now();
+
     // https://stackoverflow.com/a/2602258
     ifstream input_file(input_filename);
     stringstream buffer;
@@ -163,10 +168,27 @@ void compress_file(string input_filename, string output_filename, bool benchmark
     ofstream output_file(output_filename);
     output_file << compressed;
     output_file.close();
+
+    auto stop = high_resolution_clock::now();
+
+    if (benchmark)
+    {
+        double percent_compressed = (1 - ((double) compressed.size() / (double) file_content.size())) * 100;
+        duration<double, std::milli> time_ms = stop - start;
+
+        cout << endl << "BENCHMARK" << endl;
+        cout << "Compression time: " << time_ms.count() << " ms" << endl;
+        cout << "Original file size: " << file_content.size() << " B" << endl;
+        cout << "Compressed file size: " << compressed.size() << " B" << endl;
+        cout << "Compression ratio: " << percent_compressed << " %" << endl;
+    }
 }
 
 void decompress_file(string input_filename, string output_filename, bool benchmark)
 {
+    // https://stackoverflow.com/a/22387757
+    auto start = high_resolution_clock::now();
+
     // https://stackoverflow.com/a/2602258
     // https://stackoverflow.com/a/17584871
     ifstream input_file(input_filename, ios::binary);
@@ -195,6 +217,16 @@ void decompress_file(string input_filename, string output_filename, bool benchma
     ofstream output_file(output_filename);
     output_file << decompressed;
     output_file.close();
+
+    auto stop = high_resolution_clock::now();
+
+    if (benchmark)
+    {
+        duration<double, std::milli> time_ms = stop - start;
+
+        cout << endl << "BENCHMARK" << endl;
+        cout << "Decompression time: " << time_ms.count() << " ms" << endl;
+    }
 }
 
 int main()
