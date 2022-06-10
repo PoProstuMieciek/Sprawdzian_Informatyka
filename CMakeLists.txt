@@ -1,6 +1,7 @@
 project(Sprawdzian_Informatyka)
 
 add_executable(amicable_numbers amicable_numbers/main.cpp)
+add_executable(re_TAR_d re_TAR_d/main.cpp)
 add_executable(euclidean_algorithm euclidean_algorithm/main.cpp)
 add_executable(pascal_triangle pascal_triangle/main.cpp)
 add_executable(power power/main.cpp)
