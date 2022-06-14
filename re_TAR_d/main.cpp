@@ -63,6 +63,7 @@ string compress_text(const string &text)
 {
     string dict = generate_dictionary(text);
 
+    // ceil(log2(x)) gives number of bits required to save number in binary format
     int key_bit_size = max(1, (int) ceil(log2(dict.size())));
 
     // // print dictionary
@@ -237,7 +238,7 @@ int main()
     cout << "re_TAR_d v1.0.0" << endl << endl;
 
     char benchmark = 0;
-    char mode = 0; // true - compression, false - decompression
+    char mode = 0; // c - compression, d - decompression
 
     while (benchmark != 'y' && benchmark != 'n')
     {
