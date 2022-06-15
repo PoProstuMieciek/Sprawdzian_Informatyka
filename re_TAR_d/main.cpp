@@ -1,3 +1,5 @@
+// re_TAR_d v1.0.0
+
 #include <iostream>
 #include <cmath>
 #include <algorithm>
@@ -194,14 +196,12 @@ void decompress_stream(const string &dictionary, ifstream &input_stream, unsigne
     buffer.reserve(16); // we dont need larger buffer
     buffer.erase(0, 3); // remove padding from beginning
 
-    unsigned long long bits_read = 8;
     while (input_stream.get((char &) current_byte))
     {
-        bits_read += 8;
         buffer += int_to_binary_string(current_byte, 8);
 
         // save all bytes if we have any
-        while (buffer.size() >= key_bit_size && bits_read <= input_stream_size * 8 - padding)
+        while (buffer.size() - padding >= key_bit_size)
         {
             // let N = key_bit_size
             // get first N bits from buffer, and save to string
@@ -220,7 +220,7 @@ void decompress_stream(const string &dictionary, ifstream &input_stream, unsigne
 
     // N = key_bit_size
     // buffer MUST be of size N. if it is not, then we have a bug!
-    assert(buffer.size() == key_bit_size);
+    assert(buffer.size() == padding);
 }
 
 void compress_file(const string &input_filename, const string &output_filename, bool benchmark)
